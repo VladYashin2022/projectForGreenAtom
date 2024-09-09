@@ -23,7 +23,7 @@
 
 1. **Клонируйте репозиторий**:
 
-   git clone [https://github.com/your-repository-url.git](https://github.com/VladYashin2022/projectForGreenAtom.git)
+   git clone https://github.com/VladYashin2022/projectForGreenAtom.git)=
 
 2. **Перейдите в папку проекта**
 
@@ -49,11 +49,11 @@
 POST /rosatom/post-file
 Content-Type: application/json
 
-{
-    "title": "example.txt",
-    "fileBase64": "Здесь должно быть содержимое файла в base64",
-    "description":"Описание файла"
-}
+{  
+    "title": "example.txt",  
+    "fileBase64": "Здесь должно быть содержимое файла в base64",  
+    "description":"Описание файла"  
+}  
 
 ## Пример запроса для получения файла по ID
 
