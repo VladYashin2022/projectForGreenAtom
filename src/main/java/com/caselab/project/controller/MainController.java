@@ -2,7 +2,6 @@ package com.caselab.project.controller;
 
 import com.caselab.project.entity.File;
 import com.caselab.project.repository.FileRepo;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -10,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+import java.util.Base64;
 import java.util.List;
 
 @Slf4j
@@ -22,24 +23,32 @@ public class MainController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/rosatom/post-file")
-    public String addCat(@RequestBody File file) throws JsonProcessingException {
+    public long addFile(@RequestBody File file) {
+        File.encodeFileBase64(file);
         log.info("New row: {}", fileRepo.save(file));
-        return "success";
+        return file.getId();
     }
 
     @SneakyThrows
     @GetMapping("/rosatom/get-all-files")
-    public List<File> getAllCats() {
-        return fileRepo.findAll();
+    public List<File> getAllFiles() {
+        List<File> files = fileRepo.findAll();
+        if (files.isEmpty()){
+            throw new FileNotFoundException("File not found");
+        } else {
+            files.forEach(File::decodeFileBase64);
+            return files;
+        }
     }
 
     @GetMapping("/rosatom")
-    public File getFile(@RequestParam int id) {
+    public File getFile(@RequestParam long id) {
+        File.decodeFileBase64(fileRepo.findById(id).get());
         return fileRepo.findById(id).orElseThrow(() -> new RuntimeException("No row found"));
     }
 
     @DeleteMapping("/rosatom")
-    public String deleteFile(@RequestParam int id) {
+    public String deleteFile(@RequestParam long id) {
         if(fileRepo.existsById(id)) {
             fileRepo.deleteById(id);
             return "success";
@@ -48,8 +57,14 @@ public class MainController {
         }
     }
 
+    @DeleteMapping("/rosatom/delete-all")
+    public String deleteAllFiles() {
+        fileRepo.deleteAll();
+        return "all files deleted";
+    }
+
     @PutMapping("/rosatom/change-file")
-    public String updateCat(@RequestBody File file) {
+    public String updateFile(@RequestBody File file) {
         if(!fileRepo.existsById(file.getId())) {
             return "not found";
         }
