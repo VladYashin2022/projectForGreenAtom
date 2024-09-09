@@ -1,10 +1,8 @@
 package com.caselab.project.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Base64;
 import java.util.Date;
 
@@ -12,7 +10,8 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "files")
-public class File {
+
+public class File  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,7 +25,6 @@ public class File {
     @Column
     private String description;
 
-
     public File(String fileBase64, String title, String description) {
         this.fileBase64 = fileBase64;
         this.title = title;
@@ -35,6 +33,7 @@ public class File {
     }
 
     public File() {
+
     }
 
     //метод для кодирования в Base64
