@@ -38,7 +38,7 @@
    http://localhost:8090
 
 
-<img width="644" alt="image" src="https://github.com/user-attachments/assets/8c31070c-f82d-45c3-b19a-b28cca16b1b7">
+<img width="644" alt="image" src="https://github.com/user-attachments/assets/0e5c50d6-d37e-4946-afa0-af24698f075e">
 
 ## Кодирование и декодирование файлов
 
